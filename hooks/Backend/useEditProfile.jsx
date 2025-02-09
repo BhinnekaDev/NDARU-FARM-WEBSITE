@@ -3,8 +3,9 @@ import toast from "react-hot-toast";
 import { firestore } from "@/lib/firebaseConfig";
 import { doc, setDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-import { formatHuruf } from "@/utils/utilsHanyaHuruf";
+import { formatHuruf } from "@/utils/utilsNama";
 import { formatNoTelepon } from '@/utils/utilsNoTelepon';
+import { formatAlamat } from "@/utils/utilsAlamat";
 
 const useProfileEdit = (initialData) => {
     const [isEditable, setIsEditable] = useState(false);
@@ -32,6 +33,15 @@ const useProfileEdit = (initialData) => {
             }));
             return;
         }
+        if (name === "Alamat_Penerima" || name === "Alamat") {
+            const formattedInput = formatAlamat(value);
+            setProfileData((prev) => ({
+                ...prev,
+                [name]: formattedInput,
+            }));
+            return;
+        }
+
         setProfileData((prevData) => ({
             ...prevData,
             [name]: value,

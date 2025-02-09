@@ -1,45 +1,10 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
-import { formatNoIdentitas } from "@/utils/utilsNoIdentitas";
-import { formatHuruf } from "@/utils/utilsHanyaHuruf";
-import { formatNoTelepon } from "@/utils/utilsNoTelepon";
+
 import { Radio } from "@material-tailwind/react";
 import useSubmitBiodata from "@/hooks/Backend/useFormBiodata";
 
-function useFormBiodataPengguna() {
-    const [formData, setFormData] = useState({
-        NIK: "",
-        Nama_Lengkap: "",
-        No_Telepon: "",
-        Jenis_Kelamin: "",
-        Tanggal_Lahir: "",
-        Alamat: "",
-        Nama_Lengkap_Penerima: "",
-        No_Telepon_Penerima: "",
-        Alamat_Penerima: "",
-    });
-
-    const handleInputChange = useCallback((e) => {
-        const { name, value } = e.target;
-        let formattedValue = value;
-
-        if (name === "NIK") {
-            formattedValue = formatNoIdentitas(value);
-        } else if (["Nama_Lengkap", "Nama_Lengkap_Penerima"].includes(name)) {
-            formattedValue = formatHuruf(value);
-        } else if (["No_Telepon", "No_Telepon_Penerima"].includes(name)) {
-            formattedValue = formatNoTelepon(value);
-        }
-
-        setFormData((prev) => ({
-            ...prev,
-            [name]: formattedValue,
-        }));
-    }, []);
-
-    return { formData, handleInputChange, setFormData };
-}
 
 function Stepper({ activeStep, steps }) {
     return (
@@ -63,8 +28,7 @@ function Stepper({ activeStep, steps }) {
 
 export default function FormBiodataPengguna() {
     const router = useRouter();
-    const { submitBiodata } = useSubmitBiodata();
-    const { formData, handleInputChange, setFormData } = useFormBiodataPengguna();
+    const { submitBiodata, formData, handleInputChange } = useSubmitBiodata();
     const [activeStep, setActiveStep] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -91,12 +55,15 @@ export default function FormBiodataPengguna() {
             return;
         }
         try {
-            await submitBiodata(penggunaID, formData);
-            router.push("/Beranda");
+            const success = await submitBiodata(penggunaID);
+            if (success) {
+                router.push("/Beranda");
+            }
         } catch (error) {
             toast.error("Gagal menyimpan biodata. Silakan coba lagi.");
         }
     };
+
 
     return (
         <div className="max-w-xl mx-auto p-5 mt-2 bg-light-green-600 rounded-xl shadow-lg">
@@ -128,38 +95,28 @@ export default function FormBiodataPengguna() {
                     </div>
                     <div className="mb-4">
                         <label className="block mb-1 text-black">Jenis Kelamin</label>
-                        <Radio
-                            name="Jenis_Kelamin"
-                            label="Laki-laki"
-                            value="Laki-laki"
-                            onChange={handleInputChange}
-                            style={{
-                                appearance: "none",
-                                WebkitAppearance: "none",
-                                width: "20px",
-                                height: "20px",
-                                border: "2px solid #ccc",
-                                borderRadius: "50%",
-                                backgroundColor: "white",
-                                cursor: "pointer",
-                            }}
-                        />
-                        <Radio
-                            name="Jenis_Kelamin"
-                            label="Perempuan"
-                            value="Perempuan"
-                            onChange={handleInputChange}
-                            style={{
-                                appearance: "none",
-                                WebkitAppearance: "none",
-                                width: "20px",
-                                height: "20px",
-                                border: "2px solid #ccc",
-                                borderRadius: "50%",
-                                backgroundColor: "white",
-                                cursor: "pointer",
-                            }}
-                        />
+                        <label className="mr-4">
+                            <input
+                                type="radio"
+                                name="Jenis_Kelamin"
+                                value="Laki-laki"
+                                checked={formData.Jenis_Kelamin === "Laki-laki"}
+                                onChange={handleInputChange}
+                                className="mr-2"
+                            />
+                            Laki-laki
+                        </label>
+                        <label>
+                            <input
+                                type="radio"
+                                name="Jenis_Kelamin"
+                                value="Perempuan"
+                                checked={formData.Jenis_Kelamin === "Perempuan"}
+                                onChange={handleInputChange}
+                                className="mr-2"
+                            />
+                            Perempuan
+                        </label>
                     </div>
                     <div className="mb-4">
                         <label className="block mb-1 text-black">Tanggal Lahir</label>

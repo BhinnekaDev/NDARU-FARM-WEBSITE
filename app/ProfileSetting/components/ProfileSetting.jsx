@@ -46,6 +46,20 @@ function PengaturanProfile() {
                         <div className="items-center flex space-x-3 w-full">
                             <div className="p-5 w-full">
                                 <Typography variant="h6" color="blue-gray" className={`mb-2 font-bold ${openSans.className}`}>
+                                    NIK
+                                </Typography>
+                                <Input
+                                    type="text"
+                                    name="NIK"
+                                    placeholder="Nama Anda"
+                                    className="bg-blue-gray-800 bg-opacity-10 text-blue-gray-700 w-full"
+                                    value={profileData.NIK}
+                                    onChange={handleChange}
+                                    readOnly={!isEditable}
+                                />
+                            </div>
+                            <div className="p-5 w-full">
+                                <Typography variant="h6" color="blue-gray" className={`mb-2 font-bold ${openSans.className}`}>
                                     Nama Lengkap
                                 </Typography>
                                 <Input
