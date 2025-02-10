@@ -125,7 +125,7 @@ function KonfirmasiPemesanan() {
                         value={metodePembayaran}
                         onChange={(value) => setMetodePembayaran(value)}
                     >
-                        <Option value="">Transfer Bank</Option>
+                        <Option disabled>Transfer Bank</Option>
                         <Option value="BCA Virtual Account (987654321012)">BCA Virtual Account (987654321012)</Option>
                         <Option value="BRI Virtual Account (8765432109876543)">BRI Virtual Account (8765432109876543)</Option>
                         <Option value="BNI Virtual Account (7654321098)">BNI Virtual Account (7654321098)</Option>

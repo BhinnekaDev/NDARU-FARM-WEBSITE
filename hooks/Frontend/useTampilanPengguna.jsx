@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { firestore } from "@/lib/firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 
-function useVerifikasiLogin() {
+function useTampilanPengguna() {
     const [apakahSudahLogin, setApakahSudahLogin] = useState(false);
     const [userID, setUserID] = useState(null);
     const [detailPengguna, setDetailPengguna] = useState({
@@ -63,4 +63,4 @@ function useVerifikasiLogin() {
     return { apakahSudahLogin, userID, detailPengguna };
 }
 
-export default useVerifikasiLogin;
+export default useTampilanPengguna;

@@ -15,7 +15,6 @@ import {
 } from "@/app/MTailwind";
 import { FaHome, FaCartPlus, FaShoppingCart } from "react-icons/fa";
 import { FaGear } from "react-icons/fa6";
-import { MdHomeRepairService } from "react-icons/md";
 import { RiContactsBook2Fill, RiToolsFill } from "react-icons/ri";
 import useVerifikasiLogin from '@/hooks/Backend/useVerifikasiLogin';
 import useNavbarEfek from "@/hooks/Frontend/useNavbarEfek";
@@ -89,7 +88,6 @@ function Navigation() {
                     </Typography>
                     <div className="hidden lg:block">{navList}</div>
                     <div>
-                        {/* Conditionally render based on login status */}
                         {loading ? (
                             <p></p>
                         ) : isLoggedIn ? (

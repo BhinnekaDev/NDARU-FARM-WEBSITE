@@ -3,7 +3,6 @@
 import React from 'react';
 import { Button } from '@/app/MTailwind';
 import Image from 'next/image';
-import { Toaster } from 'react-hot-toast';
 import { FcGoogle } from 'react-icons/fc';
 import useLoginWithGoogle from '@/hooks/Backend/useMasukDenganGoogle';
 import useNavbarAktif from '@/hooks/Frontend/useNavbarAktif';
@@ -18,7 +17,6 @@ function LoginForm() {
 
     return (
         <div className="flex h-screen items-center justify-center bg-[#f6edd9]">
-            <Toaster position="top-right" reverseOrder={false} />
             <div className="bg-white border-2 border-[#f6fbf2] shadow-2xl rounded-lg flex overflow-hidden w-full max-w-4xl">
                 <>
                     <div className="w-1/2 p-8">

@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { firestore } from "@/lib/firebaseConfig";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import toast from "react-hot-toast";
 import { formatNoIdentitas } from "@/utils/utilsNoIdentitas";
@@ -62,6 +62,13 @@ const useSubmitBiodata = () => {
         return true;
     };
 
+    const pengecekanNIK = async (NIK) => {
+        const penggunaRef = collection(firestore, "pengguna");
+        const cekNIK = query(penggunaRef, where("NIK", "==", NIK));
+        const querySnapshot = await getDocs(cekNIK);
+        return !querySnapshot.empty;
+    };
+
     const submitBiodata = async (penggunaID) => {
         if (!isFormDataValid()) {
             return;
@@ -79,6 +86,15 @@ const useSubmitBiodata = () => {
             }
 
             const email = user.email;
+
+            const pengecekanNIKSudahAda = await pengecekanNIK(formData.NIK);
+            console.log(pengecekanNIKSudahAda);
+            if (pengecekanNIKSudahAda) {
+                toast.error("NIK sudah terdaftar. Gunakan NIK lain.");
+                setIsLoading(false);
+                return;
+            }
+
             const userRef = doc(firestore, "pengguna", penggunaID);
 
             await setDoc(userRef, {

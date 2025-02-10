@@ -4,8 +4,10 @@ import "@/app/globals.css";
 import useTampilanPengguna from "@/hooks/Frontend/useTampilanPengguna";
 import useKirimMasukan from "@/hooks/Backend/useMasukkanKomentar";
 import { Card, Input, Textarea, Button } from "@material-tailwind/react";
+import useVerifikasiLogin from "@/hooks/Backend/useVerifikasiLogin";
 
 function Kontak() {
+    const { isLoggedIn } = useVerifikasiLogin();
     const { detailPengguna } = useTampilanPengguna();
     const { kirimMasukan, loading, pesan, setPesan } = useKirimMasukan();
 
@@ -74,7 +76,7 @@ function Kontak() {
                                 className="bg-secondary border-2 font-bold text-md py-2 px-32 hover:bg-transparent hover:border-2 hover:border-secondary hover:text-secondary"
                                 ripple={true}
                                 type="submit"
-                                disabled={loading}
+                                disabled={loading || !isLoggedIn}
                             >
                                 {loading ? "Mengirim..." : "Kirim"}
                             </Button>
