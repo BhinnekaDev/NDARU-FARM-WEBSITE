@@ -1,24 +1,20 @@
-import { useRouter } from "next/navigation";
-import React from "react";
+"use client";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-const useNavbarAktif = (initialPath = "/Beranda") => {
+const useNavbarAktif = () => {
     const router = useRouter();
-    const [navbarAktif, setnavbarAktif] = React.useState(initialPath);
+    const pathname = usePathname();
+    const [navbarAktif, setNavbarAktif] = useState(pathname || "/Beranda");
 
-    React.useEffect(() => {
-        const handlePathnameUpdate = () => {
-            const currentPath = window.location.pathname;
-            setnavbarAktif(currentPath);
-        };
-        handlePathnameUpdate();
-        window.addEventListener("popstate", handlePathnameUpdate);
-        return () => {
-            window.removeEventListener("popstate", handlePathnameUpdate);
-        };
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            setNavbarAktif(window.location.pathname);
+        }
     }, []);
 
     const handlenavbarAktif = (path) => {
-        setnavbarAktif(path);
+        setNavbarAktif(path);
         router.push(path);
     };
 

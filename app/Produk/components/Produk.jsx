@@ -58,12 +58,12 @@ function Produk() {
                                     <Image
                                         src={product.Gambar}
                                         alt={`${product.Nama}-image`}
-                                        width={600}
-                                        height={400}
+                                        fill
                                         className="rounded-md object-cover"
+                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                     />
                                 </div>
-                                <div className="p-4 space-y-2">
+                                <div className="p-2 md:p-4 space-y-2">
                                     <div className="flex items-center">
                                         <h6 className="text-slate-800 text-xl font-black">
                                             {product.Nama}

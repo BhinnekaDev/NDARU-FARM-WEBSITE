@@ -7,8 +7,7 @@ import { doc, getDoc } from "firebase/firestore";
 
 const useMasukDenganGoogle = () => {
     const pengarah = useRouter();
-    const [sedangMemuatMasukDenganGoogle, setSedangMemuatMasukDenganGoogle] =
-        useState(false);
+    const [sedangMemuatMasukDenganGoogle, setSedangMemuatMasukDenganGoogle] = useState(false);
 
     const masukDenganGoogle = async () => {
         const googleProvider = new GoogleAuthProvider();
@@ -19,22 +18,22 @@ const useMasukDenganGoogle = () => {
         try {
             setSedangMemuatMasukDenganGoogle(true);
             const hasil = await signInWithPopup(auth, googleProvider);
-            const pengguna = hasil.user;
-            localStorage.setItem("ID", pengguna.uid);
+            const penggunaSaatIni = hasil.user;
+
+            if (typeof window !== "undefined") {
+                localStorage.setItem("ID", penggunaSaatIni.uid);
+            }
+
             toast.success("Selamat datang di Ndaru Farm!");
 
-            const id = pengguna.uid;
-            const docRefPengguna = doc(firestore, "pengguna", id);
-            const docSnap = await getDoc(docRefPengguna);
+            const id = penggunaSaatIni.uid;
+            const docRefpenggunaSaatIni = doc(firestore, "pengguna", id);
+            const docSnap = await getDoc(docRefpenggunaSaatIni);
 
-            if (docSnap.exists()) {
-                pengarah.push("/Beranda");
-            } else {
-                pengarah.push("/FormBiodata");
-            }
+            pengarah.push(docSnap.exists() ? "/Beranda" : "/FormBiodata");
         } catch (error) {
             console.error("Login dengan Google gagal:", error);
-            toast.error("Gagal masuk dengan Google. Silakan coba lagi.");
+            toast.error(`Gagal masuk dengan Google: ${error.message}`);
         } finally {
             setSedangMemuatMasukDenganGoogle(false);
         }

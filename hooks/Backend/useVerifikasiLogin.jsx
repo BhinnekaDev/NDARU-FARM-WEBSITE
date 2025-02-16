@@ -5,7 +5,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import toast from "react-hot-toast";
 
-const useVerifyLogin = () => {
+const useVerifikasiLogin = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [loading, setLoading] = useState(true);
     const [pengguna, setPengguna] = useState(null);
@@ -13,6 +13,8 @@ const useVerifyLogin = () => {
     const pengarah = useRouter();
 
     useEffect(() => {
+        if (typeof window === "undefined") return;
+
         const checkUserInFirestore = async (ID) => {
             try {
                 const userRef = doc(firestore, "pengguna", ID);
@@ -32,7 +34,11 @@ const useVerifyLogin = () => {
             }
         };
 
-        const storedID = localStorage.getItem("ID");
+        let storedID = null;
+        if (typeof window !== "undefined") {
+            storedID = localStorage.getItem("ID");
+        }
+
         if (storedID) {
             checkUserInFirestore(storedID);
         } else {
@@ -58,7 +64,6 @@ const useVerifyLogin = () => {
         if (!isLoggedIn) {
             setTimeout(() => pengarah.push("/Login"), 0);
             toast.error("Anda belum masuk. Silakan login terlebih dahulu.");
-            return;
         }
     };
 
@@ -71,4 +76,4 @@ const useVerifyLogin = () => {
     };
 };
 
-export default useVerifyLogin;
+export default useVerifikasiLogin;

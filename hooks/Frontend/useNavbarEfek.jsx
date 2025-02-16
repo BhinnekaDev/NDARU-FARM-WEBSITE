@@ -1,16 +1,15 @@
+"use client"; // Pastikan hook hanya berjalan di klien
 import { useState, useEffect } from "react";
 
 const useNavbar = () => {
-    const [navbarBg, setNavbarBg] = useState("bg-secondary");
+    const [navbarBg, setNavbarBg] = useState("bg-transparent");
     const [openPengaturan, setOpenPengaturan] = useState(false);
 
     useEffect(() => {
+        if (typeof window === "undefined") return;
+
         const handleScroll = () => {
-            if (window.scrollY > 50) {
-                setNavbarBg("bg-secondary");
-            } else {
-                setNavbarBg("bg-secondary");
-            }
+            setNavbarBg(window.scrollY > 50 ? "bg-secondary" : "bg-transparent");
         };
 
         const handleResize = () => {
@@ -21,6 +20,10 @@ const useNavbar = () => {
 
         window.addEventListener("scroll", handleScroll);
         window.addEventListener("resize", handleResize);
+
+        // Panggil sekali untuk mengatur state awal
+        handleScroll();
+        handleResize();
 
         return () => {
             window.removeEventListener("scroll", handleScroll);

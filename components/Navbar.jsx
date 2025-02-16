@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import {
     Navbar,
@@ -13,16 +12,18 @@ import {
     MenuList,
     MenuItem,
 } from "@/app/MTailwind";
+// Assets
 import { FaHome, FaCartPlus, FaShoppingCart } from "react-icons/fa";
 import { FaGear } from "react-icons/fa6";
 import { RiContactsBook2Fill, RiToolsFill } from "react-icons/ri";
+import Logo from "@/assets/img/logo.png";
+// Hooks
 import useVerifikasiLogin from '@/hooks/Backend/useVerifikasiLogin';
 import useNavbarEfek from "@/hooks/Frontend/useNavbarEfek";
 import useNavbarAktif from "@/hooks/Frontend/useNavbarAktif";
 import useKeluarAkun from "@/hooks/Backend/useKeluarAkun";
 
 function Navigation() {
-    const Logo = require("@/assets/img/logo.png");
     const { isLoggedIn, loading } = useVerifikasiLogin();
     const { handleLogout } = useKeluarAkun();
     const { navbarBg } = useNavbarEfek();
@@ -79,7 +80,6 @@ function Navigation() {
                 <div className="container mx-auto flex items-center justify-between text-white">
                     <Typography
                         as="a"
-                        href="#"
                         className="mr-4 cursor-pointer py-1.5 text-white flex items-center gap-x-2 uppercase font-bold"
                         onClick={() => handlenavbarAktif("/Beranda")}
                     >
@@ -89,7 +89,7 @@ function Navigation() {
                     <div className="hidden lg:block">{navList}</div>
                     <div>
                         {loading ? (
-                            <p></p>
+                            <div></div>
                         ) : isLoggedIn ? (
                             <div className="hidden sm:flex items-center gap-x-5">
                                 <a
@@ -180,6 +180,15 @@ function Navigation() {
                 </div>
                 <Collapse open={openNav}>
                     <div className="container mx-auto">{navList}</div>
+                    {loading ? (
+                        <div></div>
+                    ) : isLoggedIn ? (
+                        <div className="flex flex-1 items-center justify-center"> <Button className="text-sm font-bold bg-primary text-white border-2 border-white py-3 w-44 rounded-full" onClick={() => handlenavbarAktif("/Login")} hidden={loading || isLoggedIn}>Tester</Button>
+                        </div>
+                    ) : (
+                        <div className="flex flex-1 items-center justify-center"> <Button className="text-sm font-bold bg-primary text-white border-2 border-white py-3 w-44 rounded-full" onClick={() => handlenavbarAktif("/Login")} hidden={loading || isLoggedIn}>Login</Button>
+                        </div>
+                    )}
                 </Collapse>
             </Navbar>
         </div>
